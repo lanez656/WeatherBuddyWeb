@@ -1,7 +1,3 @@
-html {
-  font-size: 14px;
-}
-
 @media (min-width: 768px) {
   html {
     font-size: 16px;
@@ -28,4 +24,258 @@ body {
 
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
+}
+
+/* Center wrapper */
+.search-container {
+  text-align: center;
+  margin-top: 4rem;
+}
+
+.app-title {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  color: #2c3e50;
+}
+
+.app-subtitle {
+  font-size: 1.25rem;
+  color: #6c757d;
+  margin-bottom: 2rem;
+}
+
+/* Form Layout */
+.search-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Accessible Label (Hidden visually, active for screen readers) */
+.search-label {
+  position:relative;
+  font-size: 28px;
+}
+
+.input-group {
+  display: flex;         
+  flex-direction: row;
+  width: 100%;
+  max-width: 500px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+/* Input Field */
+.search-input {
+  flex: 1;
+  width: 35%;
+  font-size: 1rem;
+  font-weight: lighter;
+  border: 1px solid #ced4da;
+  outline: none;
+  transition: border-color 0.2s ease;
+  text-align: center;
+  }
+
+.search-input:focus {
+  border-color: #007bff;
+}
+
+/* Submit Button */
+.submit-button {
+  font-size: 1.5rem;
+  color: #ffffff;
+  background-color: #0056b3;
+  border: 1px solid #0056b3;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.submit-button:hover {
+  background-color: #0056b3;
+  border-color: #0056b3;
+}
+/* Container & Navigation */
+.results-container {
+  max-width: 700px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  font-family: inherit;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  color: #007bff;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+/* Error Banner */
+.error-banner {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+  padding: 1rem;
+  border-radius: 6px;
+  margin-bottom: 1.5rem;
+}
+
+/* Main Weather Card */
+.weather-card {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+.city-title {
+  margin: 0 0 0.5rem 0;
+  font-size: 2rem;
+  color: #1a202c;
+}
+
+/* Styling for Model.ToString() */
+.model-summary {
+  color: #4a5568;
+  font-style: italic;
+  margin-bottom: 1rem;
+}
+
+.current-weather {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.temp-display {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #2b6cb0;
+}
+
+.weather-condition {
+  font-size: 1.25rem;
+  color: #718096;
+}
+
+/* Forecast List */
+.forecast-section {
+  margin-top: 2rem;
+}
+
+.forecast-title {
+  font-size: 1.5rem;
+  color: #2d3748;
+  margin-bottom: 1rem;
+}
+
+.forecast-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.forecast-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f7fafc;
+  border: 1px solid #edf2f7;
+  padding: 0.85rem 1.25rem;
+  border-radius: 6px;
+}
+
+.forecast-date {
+  display: flex;
+  flex-direction: column;
+}
+
+.forecast-desc {
+  font-size: 0.9rem;
+  color: #718096;
+}
+
+.forecast-temps {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.95rem;
+}
+
+.temp-max {
+  color: #c53030;
+  font-weight: 600;
+}
+
+.temp-min {
+  color: #2b6cb0;
+}
+
+/* Horizontal Scroll Wrapper for Hourly Cards */
+.hourly-forecast-container {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  padding-bottom: 1rem;
+  margin-bottom: 1.5rem;
+  scroll-behavior: smooth;
+}
+
+/* Custom Scrollbar for Hourly List */
+.hourly-forecast-container::-webkit-scrollbar {
+  height: 6px;
+}
+
+.hourly-forecast-container::-webkit-scrollbar-thumb {
+  background-color: #cbd5e0;
+  border-radius: 3px;
+}
+
+/* Individual Hourly Card */
+.hourly-card {
+  flex: 0 0 auto;
+  width: 100px;
+  background-color: #f7fafc;
+  border: 1px solid #edf2f7;
+  border-radius: 8px;
+  padding: 1rem 0.5rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.hourly-time {
+  font-weight: bold;
+  color: #2d3748;
+  font-size: 0.95rem;
+}
+
+.hourly-desc {
+  font-size: 0.75rem;
+  color: #718096;
+  height: 2.2em; /* Ensures fixed height for multi-line text */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hourly-temp {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #2b6cb0;
+}
+
+.hourly-precip {
+  font-size: 0.8rem;
+  color: #4a5568;
 }

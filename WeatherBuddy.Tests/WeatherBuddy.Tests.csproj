@@ -18,4 +18,8 @@
     <Using Include="Xunit" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\WeatherBuddyApp\WeatherBuddyApp.csproj" />
+  </ItemGroup>
+
 </Project>

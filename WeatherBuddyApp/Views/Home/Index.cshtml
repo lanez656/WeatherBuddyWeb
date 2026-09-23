@@ -1,8 +1,20 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Search Weather";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="search-container">
+    <h1 class="app-title">WeatherBuddy</h1>
+    <p class="app-subtitle" >Where do you want to know the weather for?</p>
+
+    <!-- Form | Takes the string of the city name and submit a HTTP get request-->
+    <form asp-controller="Home" asp-action="Results" method="get" class="search-form">
+
+    <label class="search-label" for="search-input">Enter City</label>
+    <div class="input-group">
+        <input id="search-input" type="text" name="cityName" class="search-input" autocomplete="off" placeholder="Enter city (eg. Copenhagen, Tokyo...)" required /> 
+        <button type="submit" class="submit-button"> Search </button>
+    </div>
+
+    </form>
+
 </div>

@@ -1,0 +1,73 @@
+@model WeatherBuddyApp.Models.City
+@using WeatherBuddyApp.Services
+
+@{
+    ViewData["Title"] = Model != null ? $"Weather in {Model.CityName}" : "Error";
+}
+
+<div class="results-container">
+    <a asp-action="Index" class="back-link">&larr; Back to Search</a>
+
+    @if (ViewBag.Error != null)
+    {
+        <div class="error-banner">
+            <p>@ViewBag.Error</p>
+        </div>
+    }
+    else if (Model != null)
+    {
+        <!-- Main Card: Displays your overridden City.ToString() -->
+        <div class="weather-card">
+            <h2 class="city-title">@Model.CityName, @Model.Country</h2>
+
+            <div class="current-weather">
+                <span class="temp-display">@Model.CurrentWeather.Temperature °C</span>
+                <span class="weather-condition">
+                    @WeatherCodeDictionary.TranslateCode(Model.CurrentWeather.WeatherCode)
+                </span>
+            </div>
+        </div>
+
+        <!-- Hourly Forecast Section (Horizontal Scrollable Grid) -->
+        <div class="forecast-section">
+            <h3 class="forecast-title">Hourly Forecast</h3>
+            
+            <div class="hourly-forecast-container">
+                @foreach (var hour in Model.HourlyForecast.HourlyForecasting)
+                {
+                    <div class="hourly-card">
+                        <span class="hourly-time">@hour.Time:00</span>
+                        <span class="hourly-desc">
+                            @WeatherCodeDictionary.TranslateCode(hour.WeatherCode)
+                        </span>
+                        <span class="hourly-temp">@hour.Temperature °C</span>
+                        <span class="hourly-precip">🌧️ @hour.Percipitation%</span>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Daily Forecast Section -->
+        <div class="forecast-section">
+            <h3 class="forecast-title">7-Day Forecast</h3>
+            
+            <div class="forecast-list">
+                @foreach (var day in Model.DailyForecast.DailyForecasting)
+                {
+                    <div class="forecast-item">
+                        <div class="forecast-date">
+                            <strong>@day.Date</strong>
+                            <span class="forecast-desc">
+                                @WeatherCodeDictionary.TranslateCode(day.WeatherCode)
+                            </span>
+                        </div>
+                        <div class="forecast-temps">
+                            <span class="temp-max">High: @day.TempMax °C</span>
+                            <span class="temp-min">Low: @day.TempMin °C</span>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+</div>

@@ -1,16 +1,17 @@
-@media (min-width: 768px) {
+@media (max-width: 768px) {
   html {
-    font-size: 16px;
+    font-size: 6px;
   }
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+  box-shadow: 0 0 0 0.2rem white, 0 0 0 0.5rem #258cfb;
 }
 
 html {
   position: relative;
   min-height: 100%;
+  font-size: 16px;
 }
 
 body {
@@ -29,19 +30,19 @@ body {
 /* Center wrapper */
 .search-container {
   text-align: center;
-  margin-top: 4rem;
+  margin-top: 8rem;
 }
 
 .app-title {
   font-size: 2.5rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 1rem;
   color: #2c3e50;
 }
 
 .app-subtitle {
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   color: #6c757d;
-  margin-bottom: 2rem;
+  margin-bottom: 4rem;
 }
 
 /* Form Layout */
@@ -54,22 +55,23 @@ body {
 /* Accessible Label (Hidden visually, active for screen readers) */
 .search-label {
   position:relative;
-  font-size: 28px;
+  font-size: 1.5rem;
 }
 
 .input-group {
-  display: flex;         
+  display: flex;        
   flex-direction: row;
-  width: 100%;
+  flex-wrap: nowrap;
+  align-items: center;
+  width: 50%;
   max-width: 500px;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin: auto;
+  justify-content: center;
 }
 
 /* Input Field */
 .search-input {
   flex: 1;
-  width: 35%;
   font-size: 1rem;
   font-weight: lighter;
   border: 1px solid #ced4da;
@@ -84,7 +86,7 @@ body {
 
 /* Submit Button */
 .submit-button {
-  font-size: 1.5rem;
+  font-size: 1rem;
   color: #ffffff;
   background-color: #0056b3;
   border: 1px solid #0056b3;

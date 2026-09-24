@@ -16,6 +16,8 @@ html {
 
 body {
   margin-bottom: 60px;
+  background: linear-gradient(180deg, #ff6000 0%, #ff8800 50%, #ffbe00 100%);
+  background-repeat: no-repeat;
 }
 
 .form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
@@ -36,12 +38,12 @@ body {
 .app-title {
   font-size: 2.5rem;
   margin-bottom: 1rem;
-  color: #2c3e50;
+  color: white;
 }
 
 .app-subtitle {
   font-size: 1.5rem;
-  color: #6c757d;
+  color: white;
   margin-bottom: 4rem;
 }
 
@@ -56,16 +58,17 @@ body {
 .search-label {
   position:relative;
   font-size: 1.5rem;
+  color: white;
 }
 
 .input-group {
   display: flex;        
   flex-direction: row;
   flex-wrap: nowrap;
-  align-items: center;
   width: 50%;
   max-width: 500px;
   margin: auto;
+  align-items: stretch;
   justify-content: center;
 }
 
@@ -77,7 +80,11 @@ body {
   border: 1px solid #ced4da;
   outline: none;
   transition: border-color 0.2s ease;
-  text-align: center;
+  text-align: left;
+  color: black;
+  padding: 0.5rem 1rem;
+  border-top-left-radius: 0.5rem;
+  border-bottom-left-radius: 0.5rem;
   }
 
 .search-input:focus {
@@ -92,6 +99,9 @@ body {
   border: 1px solid #0056b3;
   cursor: pointer;
   transition: background-color 0.2s ease;
+  padding: 0.5rem 0.75rem;
+  border-top-right-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
 }
 
 .submit-button:hover {
@@ -109,8 +119,7 @@ body {
 .back-link {
   display: inline-block;
   margin-bottom: 1.5rem;
-  color: #007bff;
-  text-decoration: none;
+  color: black;
   font-weight: 500;
 }
 
@@ -141,12 +150,12 @@ body {
 .city-title {
   margin: 0 0 0.5rem 0;
   font-size: 2rem;
-  color: #1a202c;
+  color: black;
 }
 
 /* Styling for Model.ToString() */
 .model-summary {
-  color: #4a5568;
+  color: black;
   font-style: italic;
   margin-bottom: 1rem;
 }
@@ -161,12 +170,12 @@ body {
 .temp-display {
   font-size: 2.5rem;
   font-weight: bold;
-  color: #2b6cb0;
+  color: black;
 }
 
 .weather-condition {
   font-size: 1.25rem;
-  color: #718096;
+  color: black;
 }
 
 /* Forecast List */
@@ -176,7 +185,7 @@ body {
 
 .forecast-title {
   font-size: 1.5rem;
-  color: #2d3748;
+  color: black;
   margin-bottom: 1rem;
 }
 
@@ -199,11 +208,12 @@ body {
 .forecast-date {
   display: flex;
   flex-direction: column;
+  color: black;
 }
 
 .forecast-desc {
   font-size: 0.9rem;
-  color: #718096;
+  color: black;
 }
 
 .forecast-temps {
@@ -213,12 +223,12 @@ body {
 }
 
 .temp-max {
-  color: #c53030;
+  color: #dc1010;
   font-weight: 600;
 }
 
 .temp-min {
-  color: #2b6cb0;
+  color: #0b65c5;
 }
 
 /* Horizontal Scroll Wrapper for Hourly Cards */
@@ -258,7 +268,7 @@ body {
 
 .hourly-time {
   font-weight: bold;
-  color: #2d3748;
+  color: black;
   font-size: 0.95rem;
 }
 
@@ -279,5 +289,5 @@ body {
 
 .hourly-precip {
   font-size: 0.8rem;
-  color: #4a5568;
+  color: black;
 }

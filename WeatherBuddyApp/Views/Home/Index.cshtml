@@ -2,6 +2,8 @@
     ViewData["Title"] = "Search Weather";
 }
 
+<canvas id="sunsetCanvas"></canvas>
+
 <div class="search-container">
     <h1 class="app-title">WeatherBuddy</h1>
     <p class="app-subtitle" >Where do you want to know the weather for?</p>
@@ -18,3 +20,7 @@
     </form>
 
 </div>
+
+@section Scripts {
+    <script src="~/js/sunset.js"></script>
+}

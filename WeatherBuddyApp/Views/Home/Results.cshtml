@@ -5,6 +5,8 @@
     ViewData["Title"] = Model != null ? $"Weather in {Model.CityName}" : "Error";
 }
 
+<canvas id="weatherCanvas"></canvas>
+
 <div class="results-container">
     <a asp-action="Index" class="back-link">&larr; Back to Search</a>
 
@@ -71,3 +73,13 @@
         </div>
     }
 </div>
+
+@section Scripts {
+    <script src="~/js/weatherBackground.js"></script>
+    @if (Model?.CurrentWeather != null)
+    {
+        <script>
+            initWeatherBackground(@Model.CurrentWeather.WeatherCode);
+        </script>
+    }
+}

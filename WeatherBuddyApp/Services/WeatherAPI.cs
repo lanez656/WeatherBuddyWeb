@@ -146,7 +146,6 @@ public static class WeatherApi
         string coordinates = $"latitude={latitude}&longitude={longitude}";
         
         string urlForDataCall = $"https://api.open-meteo.com/v1/forecast?{coordinates}&daily=weather_code,temperature_2m_max,temperature_2m_min&hourly=temperature_2m,weather_code,precipitation_probability&current=temperature_2m,weather_code&timezone=Europe%2FBerlin";
-        Console.WriteLine(urlForDataCall);
 
         return (urlForDataCall, country);
     } 

@@ -58,7 +58,7 @@ body {
 .search-label {
   position:relative;
   font-size: 1.5rem;
-  color: white;
+  color: black;
 }
 
 .input-group {
@@ -290,4 +290,25 @@ body {
 .hourly-precip {
   font-size: 0.8rem;
   color: black;
+}
+
+#sunsetCanvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  pointer-events: none;
+}
+
+#weatherCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    pointer-events: none;
+    transition: background 1.5s ease-in-out;
 }

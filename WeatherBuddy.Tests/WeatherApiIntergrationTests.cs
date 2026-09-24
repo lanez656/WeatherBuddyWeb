@@ -32,7 +32,5 @@ public class WeatherApiIntegrationTests
         Assert.NotNull(city.DailyForecast);
         Assert.NotEmpty(city.DailyForecast.DailyForecasting);
         Assert.Equal(7, city.DailyForecast.DailyForecasting.Count);
-
-        Console.WriteLine(city.ToString());
     }
 }

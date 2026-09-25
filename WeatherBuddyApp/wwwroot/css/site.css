@@ -312,3 +312,35 @@ body {
     pointer-events: none;
     transition: background 1.5s ease-in-out;
 }
+
+.suggestions {
+    display: none; /* JS toggles this to "block" */
+    position: absolute;
+    top: 100%;           /* sits right below the input */
+    left: 0;
+    width: 100%;          /* matches input-group width, adjust if needed */
+    background: white;
+    border: 1px solid #ccc;
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    z-index: 1000;         /* sits above other content */
+    max-height: 250px;
+    overflow-y: auto;
+}
+
+.suggestion-item {
+    padding: 10px 14px;
+    cursor: pointer;
+    text-align: left;
+    color: #333;
+    border-bottom: 1px solid #eee;
+}
+
+.suggestion-item:last-child {
+    border-bottom: none;
+}
+
+.suggestion-item:hover {
+    background-color: #f0f0f0;
+}

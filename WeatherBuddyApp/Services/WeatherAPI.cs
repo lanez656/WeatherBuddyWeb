@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Net.Http;
+using System.Reflection.Metadata;
 using System.Runtime.InteropServices.JavaScript;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -15,9 +17,9 @@ public static class WeatherApi
 {
     private static readonly HttpClient client = new HttpClient();
 
-    public static async Task<City> FetchCityDataAsync(string cityName)
+    public static async Task<City> FetchCityDataAsync(CitySuggestion suggestion)
     {
-        var (url, country) = await CoordinatesUrlBuilder(cityName);
+        string url = $"https://api.open-meteo.com/v1/forecast?latitude={suggestion.Latitude.ToString(CultureInfo.InvariantCulture)}&longitude={suggestion.Longitude.ToString(CultureInfo.InvariantCulture)}&daily=weather_code,temperature_2m_max,temperature_2m_min&hourly=temperature_2m,weather_code,precipitation_probability&current=temperature_2m,weather_code&timezone=auto";
 
         string jsonString = await client.GetStringAsync(url);
         using JsonDocument doc = JsonDocument.Parse(jsonString);
@@ -107,47 +109,70 @@ public static class WeatherApi
 
         // Instantiate city
         var city = new City(
-            cityName: cityName,
-            country: country,
+            cityName: suggestion.Name,
+            country: suggestion.Country,
+            longitude: suggestion.Longitude,
+            latitude: suggestion.Latitude,
             currentWeather: currentWeather,
             hourlyForecast: hourlyForecast,
             dailyForecast: dailyForecast
             );
 
+        if (!string.IsNullOrEmpty(suggestion.StateOrRegion))
+        {
+            city.StateOrRegion = suggestion.StateOrRegion;
+        }
+
+        Console.WriteLine(url);
+
         return city;
         
-
     }
 
-
-    // CoordinatesUrlBuilder henter koordinaterne fra OpenMateos geocoding api og indsætter dem i url'en for vores api til dataen.
-    public static async Task<(string Url, string Country)> CoordinatesUrlBuilder (string cityName)
+    public static async Task<City> FetchCityDataAsync(string cityName)
     {
-
-        string urlForCoordinates = $"https://geocoding-api.open-meteo.com/v1/search?name={cityName}&count=1&language=en&format=json";
-
-        string jsonString = await client.GetStringAsync(urlForCoordinates);
-        using JsonDocument doc = JsonDocument.Parse(jsonString);
-        JsonElement root = doc.RootElement;
-
-
-        if (!root.TryGetProperty("results", out JsonElement resultsElement) || resultsElement.GetArrayLength() == 0)
+        var suggestions = await GetCitySuggestionsAsync(cityName);
+        if (suggestions.Count == 0)
         {
             throw new ArgumentException($"City '{cityName}' could not be found.");
         }
 
-        JsonElement firstResult = root.GetProperty("results");
-        JsonElement cityElement = firstResult[0];
+        return await FetchCityDataAsync(suggestions[0]);
+    }
 
+    public static async Task<List<CitySuggestion>> GetCitySuggestionsAsync(string query)
+    {
+        string urlForRecommendations =
+        $"https://geocoding-api.open-meteo.com/v1/search?name={Uri.EscapeDataString(query)}&count=5&language=en&format=json";
 
-        var latitude = cityElement.GetProperty("latitude").GetRawText();
-        var longitude = cityElement.GetProperty("longitude").GetRawText();
-        var country = cityElement.GetProperty("country").GetRawText().Trim('"');
-        string coordinates = $"latitude={latitude}&longitude={longitude}";
-        
-        string urlForDataCall = $"https://api.open-meteo.com/v1/forecast?{coordinates}&daily=weather_code,temperature_2m_max,temperature_2m_min&hourly=temperature_2m,weather_code,precipitation_probability&current=temperature_2m,weather_code&timezone=Europe%2FBerlin";
+        string jsonString = await client.GetStringAsync(urlForRecommendations);
 
-        return (urlForDataCall, country);
-    } 
+        JsonDocument doc = JsonDocument.Parse(jsonString);
+
+        if(!doc.RootElement.TryGetProperty("results", out JsonElement results))
+        {
+            return[];
+        }
+
+        List<CitySuggestion> suggestions = [];
+
+        foreach (JsonElement result in results.EnumerateArray())
+        {
+            string stateOrRegion = "";
+            if (result.TryGetProperty("admin1", out JsonElement admin1) && admin1.ValueKind == JsonValueKind.String)
+            {
+                stateOrRegion = admin1.GetString() ?? "";
+            }
+            suggestions.Add(new CitySuggestion
+            {
+                Name = result.GetProperty("name").GetString() ?? "Could not fetch city name",
+                Country = result.GetProperty("country").GetString() ?? "Could not fetch city country",
+                StateOrRegion = stateOrRegion,
+                Latitude = result.GetProperty("latitude").GetDouble(),
+                Longitude = result.GetProperty("longitude").GetDouble()
+            });
+        }
+        return suggestions;
+    }
 }
 

@@ -13,14 +13,29 @@
 
     <label class="search-label" for="search-input">Enter City</label>
     <div class="input-group">
-        <input id="search-input" type="text" name="cityName" class="search-input" autocomplete="off" placeholder="Enter city (eg. Copenhagen, Tokyo...)" required /> 
-        <button type="submit" class="submit-button"> Search </button>
-    </div>
+        <input 
+            id="search-input" 
+            type="text" 
+            name="Name" 
+            class="search-input" 
+            autocomplete="off" 
+            placeholder="Enter city (eg. Copenhagen, Tokyo...)" 
+            required /> 
 
-    </form>
+        <input type="hidden" id="lat-input" name="Latitude" />
+        <input type="hidden" id="lng-input" name="Longitude" />
+        <input type="hidden" id="country-input" name="Country" />
+        <input type="hidden" id="state-input" name="StateOrRegion" />
+
+        <button type="submit" class="submit-button"> Search </button>
+        
+        <div id="suggestions" class="suggestions"></div>
+    </div>
+</form>
 
 </div>
 
 @section Scripts {
     <script src="~/js/sunset.js"></script>
+    <script src="~/js/search.js"></script>
 }

@@ -13,17 +13,19 @@ public class HomeController : Controller
         return View();
     }
 
-    public async Task<IActionResult> Results(string? cityName)
+    public async Task<IActionResult> Results(CitySuggestion suggestion)
     {
-        if (string.IsNullOrWhiteSpace(cityName))
+        if (suggestion == null || string.IsNullOrWhiteSpace(suggestion.Name))
         {
-            // Redirect back to home if user submits an empty search
             return RedirectToAction("Index");
         }
 
         try
         {
-            City resultCity = await WeatherApi.FetchCityDataAsync(CultureInfo.CurrentCulture.TextInfo.ToTitleCase(cityName));
+            City resultCity = suggestion.Latitude == 0 && suggestion.Longitude == 0
+                ? await WeatherApi.FetchCityDataAsync(suggestion.Name)
+                : await WeatherApi.FetchCityDataAsync(suggestion);
+
             return View(resultCity);
         }
         catch (Exception)
@@ -31,6 +33,18 @@ public class HomeController : Controller
             ViewBag.Error = "An error occurred while fetching weather data.";
             return View();
         }
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Suggestions(string query)
+    {
+        if (string.IsNullOrWhiteSpace(query) || query.Length < 2)
+        {
+            return Json(Array.Empty<CitySuggestion>());
+        }
+        
+        var suggestions = await WeatherApi.GetCitySuggestionsAsync(query);
+        return Json(suggestions);
     }
 
     public IActionResult Privacy()

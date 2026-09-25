@@ -20,7 +20,8 @@
     {
         <!-- Main Card: Displays your overridden City.ToString() -->
         <div class="weather-card">
-            <h2 class="city-title">@Model.CityName, @Model.Country</h2>
+            <h2 class="city-title">@Model.CityName</h2>
+            <p>@Model.Country, @Model.StateOrRegion, @Model.GetFormattedCoordinates()</p>
 
             <div class="current-weather">
                 <span class="temp-display">@Model.CurrentWeather.Temperature °C</span>

@@ -1,3 +1,25 @@
+// 1. Gruppering af Open-Meteo koder
+function getPreset(code) {
+    // Solrigt / Næsten klart (0, 1)
+    if ([0, 1].includes(code)) {
+        return { mode: 'CLEAR', cloudCount: 0, showSun: true, bg: 'linear-gradient(180deg, #6374d2 0%, #17b2d8 100%)' };
+    }
+    // Delvist skyet (2)
+    if (code === 2) {
+        return { mode: 'PARTLY_CLOUDY', cloudCount: 10, showSun: true, bg: 'linear-gradient(180deg, #6374d2, #2297d1 0% 100%)' };
+    }
+    // Overskyet / Tåge (3, 45, 48)
+    if ([3, 45, 48].includes(code)) {
+        return { mode: 'OVERCAST', cloudCount: 25, showSun: false, bg: 'linear-gradient(180deg, #4B515D 0%, #A8B2C1 100%)' };
+    }
+    // Sne (71, 73, 75, 77, 85, 86)
+    if ([71, 73, 75, 77, 85, 86].includes(code)) {
+        return { mode: 'SNOW', cloudCount: 25, showSun: false, bg: 'linear-gradient(180deg, #2b5876 0%, #4e4376 100%)' };
+    }
+    // Regn / Støvregn / Torden (51-67, 80-82, 95-99)
+    return { mode: 'RAIN', cloudCount: 25, showSun: false, bg: 'linear-gradient(180deg, #0f2027 0%, #203a43 50%, #2c5364 100%)' };
+}
+
 function initWeatherBackground(weatherCode) {
     const canvas = document.getElementById('weatherCanvas');
     if (!canvas) return;
@@ -13,28 +35,6 @@ function initWeatherBackground(weatherCode) {
     }
     window.addEventListener('resize', resize);
     resize();
-
-    // 1. Gruppering af Open-Meteo koder
-    function getPreset(code) {
-        // Solrigt / Næsten klart (0, 1)
-        if ([0, 1].includes(code)) {
-            return { mode: 'CLEAR', cloudCount: 0, showSun: true, bg: 'linear-gradient(180deg, #6374d2 0%, #17b2d8 100%)' };
-        }
-        // Delvist skyet (2)
-        if (code === 2) {
-            return { mode: 'PARTLY_CLOUDY', cloudCount: 10, showSun: true, bg: 'linear-gradient(180deg, #6374d2, #2297d1 0% 100%)' };
-        }
-        // Overskyet / Tåge (3, 45, 48)
-        if ([3, 45, 48].includes(code)) {
-            return { mode: 'OVERCAST', cloudCount: 25, showSun: false, bg: 'linear-gradient(180deg, #4B515D 0%, #A8B2C1 100%)' };
-        }
-        // Sne (71, 73, 75, 77, 85, 86)
-        if ([71, 73, 75, 77, 85, 86].includes(code)) {
-            return { mode: 'SNOW', cloudCount: 25, showSun: false, bg: 'linear-gradient(180deg, #2b5876 0%, #4e4376 100%)' };
-        }
-        // Regn / Støvregn / Torden (51-67, 80-82, 95-99)
-        return { mode: 'RAIN', cloudCount: 25, showSun: false, bg: 'linear-gradient(180deg, #0f2027 0%, #203a43 50%, #2c5364 100%)' };
-    }
 
     const config = getPreset(weatherCode);
     canvas.style.background = config.bg;

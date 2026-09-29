@@ -15,8 +15,9 @@ public class ControllerTests
     public async Task Test_ControllerRedirectsWhenCityNameIsNullOrWhitespace(string? cityName)
     {
         HomeController controller = new();
+        CitySuggestion suggestion = new() {Name = cityName};
 
-        var result = await controller.Results(cityName);
+        var result = await controller.Results(suggestion);
 
         var redirectResult = Assert.IsType<RedirectToActionResult>(result);
         Assert.Equal("Index", redirectResult.ActionName);
@@ -26,8 +27,9 @@ public class ControllerTests
     public async Task Test_ControllerReturnsCityViewWhenCityIsFound()
     {
         HomeController controller = new();
+        CitySuggestion suggestion = new() {Name = "Esbjerg"};
 
-        var result = await controller.Results("Esbjerg");
+        var result = await controller.Results(suggestion);
 
         var viewResult = Assert.IsType<ViewResult>(result);
         var city = Assert.IsType<City>(viewResult.Model);
@@ -38,8 +40,9 @@ public class ControllerTests
     public async Task Test_ControllerReturnsErrorViewWhenCityCannotBeFound()
     {
         HomeController controller = new();
+        CitySuggestion suggestion = new() {Name = "CityThatDefinitelyDoesNotExist123456"};
 
-        var result = await controller.Results("CityThatDefinitelyDoesNotExist123456");
+        var result = await controller.Results(suggestion);
 
         var viewResult = Assert.IsType<ViewResult>(result);
         Assert.Equal("An error occurred while fetching weather data.", controller.ViewBag.Error);

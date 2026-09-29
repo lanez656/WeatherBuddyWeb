@@ -17,15 +17,47 @@ public static class WeatherApi
 {
     private static readonly HttpClient client = new HttpClient();
 
+    /// <summary>
+    /// Fetches the weather data for a given <see cref="CitySuggestion"/> 
+    /// </summary>
+    /// <param name="suggestion">the given city we want to find the weather data for</param>
+    /// <returns>A <see cref="City"/> with current, hourly and daily weather.</returns>
     public static async Task<City> FetchCityDataAsync(CitySuggestion suggestion)
     {
-        string url = $"https://api.open-meteo.com/v1/forecast?latitude={suggestion.Latitude.ToString(CultureInfo.InvariantCulture)}&longitude={suggestion.Longitude.ToString(CultureInfo.InvariantCulture)}&daily=weather_code,temperature_2m_max,temperature_2m_min&hourly=temperature_2m,weather_code,precipitation_probability&current=temperature_2m,weather_code&timezone=auto";
-
+        string url = ForecastUrlBuilder(suggestion);
         string jsonString = await client.GetStringAsync(url);
+        return ParseCity(jsonString, suggestion);
+    }
+
+    /// <summary>
+    /// This builds the url required for our GET request
+    /// </summary>
+    /// <param name="suggestion">This is the city that we're building the URL for</param>
+    /// <returns>The url now ready for the HttpClient to request with</returns>
+    private static string ForecastUrlBuilder(CitySuggestion suggestion)
+    {
+        string lat = suggestion.Latitude.ToString(CultureInfo.InvariantCulture);
+        string lon = suggestion.Longitude.ToString(CultureInfo.InvariantCulture);
+        // TODO: maybe the url should be less hardcoded ift daily, hourly osv?
+        string url = $"https://api.open-meteo.com/v1/forecast?latitude={lat}&longitude={lon}&daily=weather_code,temperature_2m_max,temperature_2m_min&hourly=temperature_2m,weather_code,precipitation_probability&current=temperature_2m,weather_code&timezone=auto";
+        return url;
+    }
+
+    /// <summary>
+    /// Parses an Open-Meteo forecast response into a <see cref="City"/>.
+    /// </summary>
+    /// <param name="jsonString">Raw JSON returned by the Open-Meteo forecast endpoint</param>
+    /// <param name="suggestion">The city the user picked; supplies name, country and coordinates</param>
+    /// <returns>The parsed city, with all the json now converted to a <see cref="City"/> </returns>
+    /// <exception cref="JsonException">Thrown if <paramref name="jsonString"/> is not valid JSON</exception>
+    /// <remarks>
+    /// If the hourly or daily section can't be read, that forecast is left empty instead of failing.
+    /// </remarks>
+    private static City ParseCity(string jsonString, CitySuggestion suggestion) {
+        
+        // City består af de andre elementer i model, så vi starter fra bunden og arbejder mod toppen(city)
         using JsonDocument doc = JsonDocument.Parse(jsonString);
         JsonElement root = doc.RootElement;
-
-       // City består af de andre elementer i model, så vi starter fra bunden og arbejder mod toppen(city)
 
        //Hour - HourlyForecast
        HourlyForecast hourlyForecast;
@@ -66,7 +98,7 @@ public static class WeatherApi
         List<double> dailyMaxTemps = JsonSerializer.Deserialize<List<double>>(dailyElement.GetProperty("temperature_2m_max").GetRawText()) ?? throw new JsonException("Temperature_max is null");
         List<double> dailyMinTemps = JsonSerializer.Deserialize<List<double>>(dailyElement.GetProperty("temperature_2m_min").GetRawText()) ?? throw new JsonException("Temperature_min is null");
 
-        List<Day> dayList = new List<Day>();
+        List<Day> dayList = [];
 
         // Opretter objekterne en ad gangen med for loop
         for (int i = 0; i < dates.Count; i++){
@@ -122,8 +154,6 @@ public static class WeatherApi
         {
             city.StateOrRegion = suggestion.StateOrRegion;
         }
-
-        Console.WriteLine(url);
 
         return city;
         

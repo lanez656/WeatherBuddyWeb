@@ -15,7 +15,7 @@ public class ControllerTests
     public async Task Test_ControllerRedirectsWhenCityNameIsNullOrWhitespace(string? cityName)
     {
         HomeController controller = new();
-        CitySuggestion suggestion = new() {Name = cityName};
+        CitySuggestion suggestion = new() {Name = cityName!};
 
         var result = await controller.Results(suggestion);
 

@@ -9,24 +9,37 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using WeatherBuddyApp.Models;
 using WeatherBuddyApp.Models.Forecast;
+using WeatherBuddyApp.Services;
 
 namespace WeatherBuddyApp.Services;
 
 
-public static class WeatherApi
+public class WeatherService(HttpClient httpClient) : IWeatherService
 {
-    private static readonly HttpClient client = new HttpClient();
 
-    /// <summary>
-    /// Fetches the weather data for a given <see cref="CitySuggestion"/> 
-    /// </summary>
+    private readonly HttpClient _httpClient = httpClient;
+    /// <summary> Fetches the weather data for a given <see cref="CitySuggestion"/> </summary>
     /// <param name="suggestion">the given city we want to find the weather data for</param>
     /// <returns>A <see cref="City"/> with current, hourly and daily weather.</returns>
-    public static async Task<City> FetchCityDataAsync(CitySuggestion suggestion)
+    public async Task<City> FetchCityDataAsync(CitySuggestion suggestion)
     {
         string url = ForecastUrlBuilder(suggestion);
-        string jsonString = await client.GetStringAsync(url);
+        string jsonString = await _httpClient.GetStringAsync(url);
         return ParseCity(jsonString, suggestion);
+    }
+
+    /// <summary> Fetches the weather data for a given <see cref="cityName"/> </summary>
+    /// <param name="suggestion">the given city we want to find the weather data for</param>
+    /// <returns>A <see cref="City"/> with current, hourly and daily weather.</returns>
+    public async Task<City> FetchCityDataAsync(string cityName)
+    {
+        var suggestions = await GetCitySuggestionsAsync(cityName);
+        if (suggestions.Count == 0)
+        {
+            throw new ArgumentException($"City '{cityName}' could not be found.");
+        }
+
+        return await FetchCityDataAsync(suggestions[0]);
     }
 
     /// <summary>
@@ -159,23 +172,14 @@ public static class WeatherApi
         
     }
 
-    public static async Task<City> FetchCityDataAsync(string cityName)
-    {
-        var suggestions = await GetCitySuggestionsAsync(cityName);
-        if (suggestions.Count == 0)
-        {
-            throw new ArgumentException($"City '{cityName}' could not be found.");
-        }
-
-        return await FetchCityDataAsync(suggestions[0]);
-    }
-
-    public static async Task<List<CitySuggestion>> GetCitySuggestionsAsync(string query)
+    public async Task<List<CitySuggestion>> GetCitySuggestionsAsync(string query)
     {
         string urlForRecommendations =
         $"https://geocoding-api.open-meteo.com/v1/search?name={Uri.EscapeDataString(query)}&count=5&language=en&format=json";
 
-        string jsonString = await client.GetStringAsync(urlForRecommendations);
+        Console.WriteLine(urlForRecommendations);
+
+        string jsonString = await _httpClient.GetStringAsync(urlForRecommendations);
 
         JsonDocument doc = JsonDocument.Parse(jsonString);
 

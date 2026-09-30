@@ -27,7 +27,6 @@ public class ModelTests
 
     [Fact]
     public void HourlyForecast_ShouldContain24HoursInCorrectOrder()
-
     {
         // Setup
         var hours = new List<Hour>();

@@ -6,8 +6,11 @@ using Xunit;
 
 namespace WeatherBuddy.Tests;
 
-public class WeatherApiIntegrationTests
+public class WeatherApiWorks
 {
+    private readonly WeatherService _weatherService = new(new HttpClient());
+
+
     [Fact]
     public async Task FetchCityDataAsync_FromOpenMeteoApi_InstantiatesCityCorrectly()
     {
@@ -15,7 +18,7 @@ public class WeatherApiIntegrationTests
         string cityName = "Esbjerg";
 
         // Act
-        City city = await WeatherApi.FetchCityDataAsync(cityName);
+        City city = await _weatherService.FetchCityDataAsync(cityName);
 
         // Assert
         Assert.NotNull(city);

@@ -6,8 +6,10 @@ using WeatherBuddyApp.Services;
 
 namespace WeatherBuddyApp.Controllers;
 
-public class HomeController : Controller
+public class HomeController(IWeatherService weatherService) : Controller 
 {
+    private readonly IWeatherService _weatherService = weatherService;
+
     public IActionResult Index()
     {
         return View();
@@ -23,8 +25,8 @@ public class HomeController : Controller
         try
         {
             City resultCity = suggestion.Latitude == 0 && suggestion.Longitude == 0
-                ? await WeatherApi.FetchCityDataAsync(suggestion.Name)
-                : await WeatherApi.FetchCityDataAsync(suggestion);
+                ? await _weatherService.FetchCityDataAsync(suggestion.Name)
+                : await _weatherService.FetchCityDataAsync(suggestion);
 
             return View(resultCity);
         }
@@ -43,7 +45,7 @@ public class HomeController : Controller
             return Json(Array.Empty<CitySuggestion>());
         }
         
-        var suggestions = await WeatherApi.GetCitySuggestionsAsync(query);
+        var suggestions = await _weatherService.GetCitySuggestionsAsync(query);
         return Json(suggestions);
     }
 

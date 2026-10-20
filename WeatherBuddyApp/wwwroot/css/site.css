@@ -344,3 +344,23 @@ body {
 .suggestion-item:hover {
     background-color: #f0f0f0;
 }
+
+.conditions-section {
+  background-color: #ffffff;
+  border-radius: 6px;
+  margin-top: 20px;
+  padding: 5px;
+}
+
+.conditions-box {
+    display: flex;
+    justify-content: center; 
+    gap: 12px;
+}
+
+.each-condition {
+    background-color: rgb(191, 176, 65);
+    border-radius: 12px;
+    padding: 12px 16px;
+    justify-content: center;  
+}

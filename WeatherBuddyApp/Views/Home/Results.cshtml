@@ -21,7 +21,7 @@
         <!-- Main Card: Displays your overridden City.ToString() -->
         <div class="weather-card">
             <h2 class="city-title">@Model.CityName</h2>
-            <p>@Model.Country, @Model.StateOrRegion, @Model.GetFormattedCoordinates()</p>
+            <p class= "city-country-and-state">@Model.Country, @Model.StateOrRegion, @Model.GetFormattedCoordinates()</p>
 
             <div class="current-weather">
                 <span class="temp-display">@Model.CurrentWeather.Temperature °C</span>
@@ -64,9 +64,12 @@
                                 @WeatherCodeDictionary.TranslateCode(day.WeatherCode)
                             </span>
                         </div>
+                        <div class="sunrise-sunset">
+                            @day.GetSunriseAndSunset()
+                        </div>
                         <div class="forecast-temps">
-                            <span class="temp-max">High: @day.TempMax °C</span>
-                            <span class="temp-min">Low: @day.TempMin °C</span>
+                            <span>High: <span class="temp-max"> @day.TempMax °C</span> </span>
+                            <span>Low: <span class="temp-min"> @day.TempMin °C</span> </span>
                         </div>
                     </div>
                 }
@@ -78,9 +81,16 @@
 @section Scripts {
     <script src="~/js/weatherBackground.js"></script>
     @if (Model?.CurrentWeather != null)
+    
     {
         <script>
-            initWeatherBackground(@Model.CurrentWeather.WeatherCode);
+            @{
+                var today = Model.DailyForecast.DailyForecasting.FirstOrDefault();
+                var isNight = today is not null && (Model.CurrentWeather.CurrentTime < today.Sunrise || Model.CurrentWeather.CurrentTime >= today.Sunset);
+            }   
+            
+            initWeatherBackground(@Model.CurrentWeather.WeatherCode, @isNight.ToString().ToLowerInvariant());
+            
         </script>
     }
 }

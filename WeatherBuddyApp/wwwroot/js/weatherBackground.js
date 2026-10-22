@@ -1,26 +1,36 @@
 // 1. Gruppering af Open-Meteo koder
-function getPreset(code) {
+function getPreset(code, isNight) {
     // Solrigt / Næsten klart (0, 1)
     if ([0, 1].includes(code)) {
-        return { mode: 'CLEAR', cloudCount: 0, showSun: true, bg: 'linear-gradient(180deg, #6374d2 0%, #17b2d8 100%)' };
+        return isNight
+            ? { mode: 'CLEAR_NIGHT', cloudCount: 0, showSun: false, bg: 'linear-gradient(180deg, #020722 0%, #002136 100%)' }
+            : { mode: 'CLEAR_DAY', cloudCount: 0, showSun: true, bg: 'linear-gradient(180deg, #6374d2 0%, #178ed8 100%)' };
     }
     // Delvist skyet (2)
     if (code === 2) {
-        return { mode: 'PARTLY_CLOUDY', cloudCount: 10, showSun: true, bg: 'linear-gradient(180deg, #6374d2, #2297d1 0% 100%)' };
+        return isNight
+            ? { mode: 'PARTLY_CLOUDY_NIGHT', cloudCount: 20, showSun: false, bg: 'linear-gradient(180deg, #020722 0%, #002136 100%)' }
+            : { mode: 'PARTLY_CLOUDY_DAY', cloudCount: 20, showSun: true, bg: 'linear-gradient(180deg, #6374d2 0%, #178ed8 100%)' };
     }
     // Overskyet / Tåge (3, 45, 48)
     if ([3, 45, 48].includes(code)) {
-        return { mode: 'OVERCAST', cloudCount: 25, showSun: false, bg: 'linear-gradient(180deg, #4B515D 0%, #A8B2C1 100%)' };
+        return isNight
+            ? { mode: 'OVERCAST_NIGHT', cloudCount: 25, showSun: false, bg: 'linear-gradient(180deg, #020722 0%, #002136 100%)' }
+            : { mode: 'OVERCAST_DAY', cloudCount: 25, showSun: false, bg: 'linear-gradient(180deg, #4B515D 0%, #A8B2C1 100%)' };
     }
     // Sne (71, 73, 75, 77, 85, 86)
     if ([71, 73, 75, 77, 85, 86].includes(code)) {
-        return { mode: 'SNOW', cloudCount: 25, showSun: false, bg: 'linear-gradient(180deg, #2b5876 0%, #4e4376 100%)' };
+        return isNight
+            ? { mode: 'SNOW_NIGHT', cloudCount: 55, showSun: false, bg: 'linear-gradient(180deg, #101a35 0%, #26395a 100%)' }
+            : { mode: 'SNOW_DAY', cloudCount: 55, showSun: false, bg: 'linear-gradient(180deg, #2b5876 0%, #4e4376 100%)' };
     }
     // Regn / Støvregn / Torden (51-67, 80-82, 95-99)
-    return { mode: 'RAIN', cloudCount: 25, showSun: false, bg: 'linear-gradient(180deg, #0f2027 0%, #203a43 50%, #2c5364 100%)' };
+    return isNight
+        ? { mode: 'RAIN_NIGHT', cloudCount: 25, showSun: false, bg: 'linear-gradient(180deg, #050b18 0%, #12232e 50%, #1c3544 100%)' }
+        : { mode: 'RAIN_DAY', cloudCount: 25, showSun: false, bg: 'linear-gradient(180deg, #0f2027 0%, #203a43 50%, #2c5364 100%)' };
 }
 
-function initWeatherBackground(weatherCode) {
+function initWeatherBackground(weatherCode, isNight) {
     const canvas = document.getElementById('weatherCanvas');
     if (!canvas) return;
 
@@ -36,7 +46,7 @@ function initWeatherBackground(weatherCode) {
     window.addEventListener('resize', resize);
     resize();
 
-    const config = getPreset(weatherCode);
+    const config = getPreset(weatherCode, isNight);
     canvas.style.background = config.bg;
 
     // 2. Generer rolige skyer i toppen
@@ -47,28 +57,34 @@ function initWeatherBackground(weatherCode) {
             y: Math.random() * (canvas.height * 0.25), // Placeres i øverste 25% af skærmen
             radius: Math.random() * 40 + 50,
             speed: Math.random() * 0.15 + 0.05, // Meget rolig bevægelse
-            opacity: config.mode === 'OVERCAST' ? 0.85 : 0.6
+            opacity: config.mode.includes('OVERCAST') ? 0.85 : 0.6
         });
     }
 
     // 3. Generer regn- eller sne-partikler
     particles = [];
-    const particleCount = config.mode === 'RAIN' ? 100 : (config.mode === 'SNOW' ? 60 : 0);
+    let particleCount = 0;
+    if (config.mode.includes('RAIN')) {
+        particleCount = 100;
+    } else if (config.mode.includes('SNOW')) {
+        particleCount = 80;
+    }
+
     for (let i = 0; i < particleCount; i++) {
         particles.push({
             x: Math.random() * canvas.width,
             y: Math.random() * canvas.height,
             length: Math.random() * 15 + 10,
             radius: Math.random() * 3 + 1,
-            speedY: config.mode === 'RAIN' ? Math.random() * 8 + 8 : Math.random() * 1.2 + 0.5,
-            speedX: config.mode === 'SNOW' ? Math.sin(Math.random()) * 0.5 : 0,
+            speedY: config.mode.includes('RAIN') ? Math.random() * 8 + 8 : Math.random() * 1.2 + 0.5,
+            speedX: config.mode.includes('SNOW') ? (Math.random() - 0.5) * 0.5 : 0,
             opacity: Math.random() * 0.4 + 0.3
         });
     }
 
     // Hjælpefunktion til at tegne en blød sky af cirkler
     function drawCloud(cloud) {
-        ctx.fillStyle = config.mode === 'OVERCAST' 
+        ctx.fillStyle = config.mode.includes('OVERCAST')
             ? `rgba(200, 205, 215, ${cloud.opacity})` 
             : `rgba(255, 255, 255, ${cloud.opacity})`;
 
@@ -103,7 +119,7 @@ function initWeatherBackground(weatherCode) {
         });
 
         // C. Tegn og flyt regn / sne
-        if (config.mode === 'RAIN') {
+        if (config.mode.includes('RAIN')) {
             ctx.strokeStyle = 'rgba(200, 225, 255, 0.6)';
             ctx.lineWidth = 1.2;
             particles.forEach(p => {
@@ -119,7 +135,7 @@ function initWeatherBackground(weatherCode) {
                 }
             });
         } 
-        else if (config.mode === 'SNOW') {
+        else if (config.mode.includes('SNOW')) {
             particles.forEach(p => {
                 ctx.beginPath();
                 ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);

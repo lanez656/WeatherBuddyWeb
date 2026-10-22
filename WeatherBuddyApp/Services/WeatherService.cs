@@ -52,7 +52,8 @@ public class WeatherService(HttpClient httpClient) : IWeatherService
         string lat = suggestion.Latitude.ToString(CultureInfo.InvariantCulture);
         string lon = suggestion.Longitude.ToString(CultureInfo.InvariantCulture);
         // TODO: maybe the url should be less hardcoded ift daily, hourly osv?
-        string url = $"https://api.open-meteo.com/v1/forecast?latitude={lat}&longitude={lon}&daily=weather_code,temperature_2m_max,temperature_2m_min&hourly=temperature_2m,weather_code,precipitation_probability&current=temperature_2m,weather_code&timezone=auto";
+        string url = $"https://api.open-meteo.com/v1/forecast?latitude={lat}&longitude={lon}&daily=weather_code,temperature_2m_max,temperature_2m_min,sunset,sunrise&hourly=temperature_2m,weather_code,precipitation_probability&current=temperature_2m,weather_code&timezone=auto";
+        Console.WriteLine(url);
         return url;
     }
 
@@ -110,7 +111,8 @@ public class WeatherService(HttpClient httpClient) : IWeatherService
         List<int> dailyWeatherCodes = JsonSerializer.Deserialize<List<int>>(dailyElement.GetProperty("weather_code").GetRawText()) ?? throw new JsonException("Weathercode_day is null");
         List<double> dailyMaxTemps = JsonSerializer.Deserialize<List<double>>(dailyElement.GetProperty("temperature_2m_max").GetRawText()) ?? throw new JsonException("Temperature_max is null");
         List<double> dailyMinTemps = JsonSerializer.Deserialize<List<double>>(dailyElement.GetProperty("temperature_2m_min").GetRawText()) ?? throw new JsonException("Temperature_min is null");
-
+        List<DateTime> dailySunrises = JsonSerializer.Deserialize<List<DateTime>>(dailyElement.GetProperty("sunrise").GetRawText()) ?? throw new JsonException("sunrise is null");
+        List<DateTime> dailySunsets = JsonSerializer.Deserialize<List<DateTime>>(dailyElement.GetProperty("sunset").GetRawText()) ?? throw new JsonException("sunset is null");
         List<Day> dayList = [];
 
         // Opretter objekterne en ad gangen med for loop
@@ -120,7 +122,9 @@ public class WeatherService(HttpClient httpClient) : IWeatherService
             date: dates[i],
             weatherCode: dailyWeatherCodes[i],
             tempMax: dailyMaxTemps[i],
-            tempMin: dailyMinTemps[i]
+            tempMin: dailyMinTemps[i],
+            sunrise: dailySunrises[i],
+            sunset: dailySunsets[i]
         );
 
         dayList.Add(day);
@@ -139,17 +143,19 @@ public class WeatherService(HttpClient httpClient) : IWeatherService
         JsonElement currentElement = root.GetProperty("current");
         var currentTemp = currentElement.GetProperty("temperature_2m").GetDouble();
         var currentWeatherCode = currentElement.GetProperty("weather_code").GetInt32();
+        var currentTime = DateTime.ParseExact(currentElement.GetProperty("time").GetString()!,"yyyy-MM-dd'T'HH:mm",CultureInfo.InvariantCulture);
 
         currentWeather = new CurrentWeather(
             temperature: currentTemp,
-            weatherCode: currentWeatherCode, 
-            0,
-            new Wind(0, "N")
+            weatherCode: currentWeatherCode,
+            humidity: 0,
+            wind: new(0,"S"),
+            currentTime: currentTime
         );
         }
         catch
         {
-            currentWeather = new CurrentWeather(0, 0, 0, new Wind(-1, "X"));
+            throw new JsonException("Could not parse current weather from the response.");
         }
 
         // Instantiate city
@@ -176,8 +182,6 @@ public class WeatherService(HttpClient httpClient) : IWeatherService
     {
         string urlForRecommendations =
         $"https://geocoding-api.open-meteo.com/v1/search?name={Uri.EscapeDataString(query)}&count=5&language=en&format=json";
-
-        Console.WriteLine(urlForRecommendations);
 
         string jsonString = await _httpClient.GetStringAsync(urlForRecommendations);
 

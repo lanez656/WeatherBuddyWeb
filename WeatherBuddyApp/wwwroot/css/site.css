@@ -21,7 +21,7 @@ body {
 }
 
 .form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
+  color: black;
   text-align: end;
 }
 
@@ -76,19 +76,27 @@ body {
 .search-input {
   flex: 1;
   font-size: 1rem;
-  font-weight: lighter;
-  border: 1px solid #ced4da;
+  font-weight: 300;
   outline: none;
   transition: border-color 0.2s ease;
   text-align: left;
-  color: black;
   padding: 0.5rem 1rem;
   border-top-left-radius: 0.5rem;
   border-bottom-left-radius: 0.5rem;
-  }
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 32px 0px;
+  color: black;
+}
 
 .search-input:focus {
   border-color: #007bff;
+}
+
+.input-group input::placeholder {
+  color: black;
+  opacity: 1;
 }
 
 /* Submit Button */
@@ -100,8 +108,8 @@ body {
   cursor: pointer;
   transition: background-color 0.2s ease;
   padding: 0.5rem 0.75rem;
-  border-top-right-radius: 0.5rem;
-  border-bottom-right-radius: 0.5rem;
+  border-top-right-radius: 8px !important;
+  border-bottom-right-radius: 8px !important; 
 }
 
 .submit-button:hover {
@@ -119,7 +127,7 @@ body {
 .back-link {
   display: inline-block;
   margin-bottom: 1.5rem;
-  color: black;
+  color: white;
   font-weight: 500;
 }
 
@@ -139,23 +147,29 @@ body {
 
 /* Main Weather Card */
 .weather-card {
-  background-color: #ffffff;
-  border: 1px solid #e2e8f0;
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 32px 0px;
+  padding: 0.85rem 1.25rem;
   border-radius: 8px;
-  padding: 1.5rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  margin-bottom: 2rem;
 }
 
 .city-title {
   margin: 0 0 0.5rem 0;
   font-size: 2rem;
-  color: black;
+  color: white;
+}
+
+.city-country-and-state{
+  font-size: 1rem;
+  font-weight: bold;
+  color: white;
 }
 
 /* Styling for Model.ToString() */
 .model-summary {
-  color: black;
+  color: white;
   font-style: italic;
   margin-bottom: 1rem;
 }
@@ -165,17 +179,18 @@ body {
   align-items: baseline;
   gap: 1rem;
   margin-top: 1rem;
+  color: white;
 }
 
 .temp-display {
   font-size: 2.5rem;
   font-weight: bold;
-  color: black;
+  color: white;
 }
 
 .weather-condition {
   font-size: 1.25rem;
-  color: black;
+  color: white;
 }
 
 /* Forecast List */
@@ -185,7 +200,7 @@ body {
 
 .forecast-title {
   font-size: 1.5rem;
-  color: black;
+  color: white;
   margin-bottom: 1rem;
 }
 
@@ -199,36 +214,47 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #f7fafc;
-  border: 1px solid #edf2f7;
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 32px 0px;
   padding: 0.85rem 1.25rem;
-  border-radius: 6px;
+  border-radius: 8px;
 }
 
 .forecast-date {
   display: flex;
   flex-direction: column;
-  color: black;
+  color: white;
 }
 
 .forecast-desc {
   font-size: 0.9rem;
-  color: black;
+  color: white;
 }
 
 .forecast-temps {
   display: flex;
   gap: 1rem;
   font-size: 0.95rem;
+  color: white;
+}
+
+.sunrise-sunset{
+  display: flex;
+  gap: 1rem;
+  font-size: 0.95rem;
+  color: white;
 }
 
 .temp-max {
-  color: #dc1010;
-  font-weight: 600;
+  color: #fb0000;
+  font-weight: 400;
 }
 
 .temp-min {
-  color: #0b65c5;
+  color: #0477f1;
+  font-weight: 400;
 }
 
 /* Horizontal Scroll Wrapper for Hourly Cards */
@@ -255,8 +281,6 @@ body {
 .hourly-card {
   flex: 0 0 auto;
   width: 100px;
-  background-color: #f7fafc;
-  border: 1px solid #edf2f7;
   border-radius: 8px;
   padding: 1rem 0.5rem;
   text-align: center;
@@ -264,17 +288,21 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 32px 0px
 }
 
 .hourly-time {
   font-weight: bold;
-  color: black;
+  color: white;
   font-size: 0.95rem;
 }
 
 .hourly-desc {
   font-size: 0.75rem;
-  color: #718096;
+  color: white;
   height: 2.2em; /* Ensures fixed height for multi-line text */
   display: flex;
   align-items: center;
@@ -284,12 +312,12 @@ body {
 .hourly-temp {
   font-size: 1.1rem;
   font-weight: 600;
-  color: #2b6cb0;
+  color: white;
 }
 
 .hourly-precip {
   font-size: 0.8rem;
-  color: black;
+  color: white;
 }
 
 #sunsetCanvas {
@@ -322,7 +350,6 @@ body {
     background: white;
     border: 1px solid #ccc;
     border-top: none;
-    border-radius: 0 0 8px 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
     z-index: 1000;         /* sits above other content */
     max-height: 250px;

@@ -29,6 +29,9 @@
                     @WeatherCodeDictionary.TranslateCode(Model.CurrentWeather.WeatherCode)
                 </span>
             </div>
+            <span class="sunrise-sunset-time">
+                    @Model.DailyForecast.DailyForecasting.First().GetSunriseAndSunset()
+            </span>
         </div>
 
         <!-- Hourly Forecast Section (Horizontal Scrollable Grid) -->

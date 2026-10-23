@@ -161,6 +161,12 @@ body {
   color: white;
 }
 
+.sunrise-sunset-time{
+  margin: 0 0 0.5rem 0;
+  font-size: 1rem;
+  color: white;
+}
+
 .city-country-and-state{
   font-size: 1rem;
   font-weight: bold;

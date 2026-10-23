@@ -115,7 +115,6 @@ public class WeatherService(HttpClient httpClient) : IWeatherService
         List<DateTime> dailySunsets = JsonSerializer.Deserialize<List<DateTime>>(dailyElement.GetProperty("sunset").GetRawText()) ?? throw new JsonException("sunset is null");
         List<Day> dayList = [];
 
-        // Opretter objekterne en ad gangen med for loop
         for (int i = 0; i < dates.Count; i++){
 
         var day = new Day(

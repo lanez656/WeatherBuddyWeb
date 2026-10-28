@@ -31,6 +31,28 @@
             </div>
         </div>
 
+        
+        // lil map ting
+        (string Label, string Value)[]? conditions = new[]
+            {
+                (Label: "Temperature: ", Value: $"{Model.CurrentWeather.Temperature} °C"),
+                (Label: "Humidity: ", Value: $"{Model.CurrentWeather.Humidity} %"),
+                (Label: "Wind: ", Value: $"{Model.CurrentWeather.Wind.WindSpeed:0.##} m/s"), // ":0.##" means show up to two decimals
+            };
+
+        <div class="conditions-section">
+            <h3 class="conditions-title">Current Conditions</h3>    
+            <div class="conditions-box">
+                @foreach (var c in conditions)
+                {
+                    <div class="each-condition">
+                        <span class="condition-label">@c.Label</span>
+                        <span class="condition-value">@c.Value</span>
+                    </div>
+                }
+            </div>
+        </div>
+
         <!-- Hourly Forecast Section (Horizontal Scrollable Grid) -->
         <div class="forecast-section">
             <h3 class="forecast-title">Hourly Forecast</h3>
@@ -68,27 +90,6 @@
                             <span class="temp-max">High: @day.TempMax °C</span>
                             <span class="temp-min">Low: @day.TempMin °C</span>
                         </div>
-                    </div>
-                }
-            </div>
-        </div>
-
-        // lil map ting
-        (string Label, string Value)[]? conditions = new[]
-            {
-                (Label: "Temperature: ", Value: $"{Model.CurrentWeather.Temperature} °C"),
-                (Label: "Humidity: ", Value: $"{Model.CurrentWeather.Humidity} %"),
-                (Label: "Wind: ", Value: $"{Model.CurrentWeather.Wind.WindSpeed:0.##} m/s"), // ":0.##" means show up to two decimals
-            };
-
-        <div class="conditions-section">
-            <h3 class="conditions-title">Current Conditions</h3>    
-            <div class="conditions-box">
-                @foreach (var c in conditions)
-                {
-                    <div class="each-condition">
-                        <span class="condition-label">@c.Label</span>
-                        <span class="condition-value">@c.Value</span>
                     </div>
                 }
             </div>

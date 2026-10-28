@@ -6,8 +6,8 @@ public class Day(string date, int weatherCode, double tempMax, double tempMin, D
 {
     public string Date {get; set;} = date;
     public int WeatherCode {get; set;} = weatherCode;
-    public double TempMax {get; set;} = tempMax;
-    public double TempMin {get; set;} = tempMin;
+    public int TempMax {get; set;} = (int)Math.Round(tempMax, MidpointRounding.AwayFromZero);
+    public int TempMin {get; set;} = (int)Math.Round(tempMin, MidpointRounding.AwayFromZero);
 
     public DateTime Sunrise {get; set;} = sunrise;
 

@@ -152,7 +152,7 @@ public class WeatherService(HttpClient httpClient) : IWeatherService
                 apparentTemperature: currentApparentTemperature,
                 weatherCode: currentWeatherCode,
                 humidity: currentHumidity,
-                new Wind(currentWindSpeed/3.6, ToLetter(currentWindDirection)),
+                new Wind(currentWindSpeed/3.6, ToWord(currentWindDirection)),
                 currentTime: currentTime
 
             );
@@ -182,9 +182,9 @@ public class WeatherService(HttpClient httpClient) : IWeatherService
         
     }
 
-    private static string ToLetter(double degrees)
+    private static string ToWord(double degrees)
     {
-        string[] letter = { "N", "NE", "E", "SE", "S", "SW", "W", "NW" };
+        string[] letter = { "North", "Northeast", "East", "Southeast", "South", "Southwest", "West", "Northwest" };
         return letter[(int)Math.Round(degrees / 45.0) % 8];
     }
 

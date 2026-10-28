@@ -2,7 +2,7 @@ namespace WeatherBuddyApp.Models;
 
 public class CurrentWeather (double temperature, double apparentTemperature, int weatherCode, int humidity, Wind wind, DateTime currentTime)
 {
-    public double Temperature {get; set;} = temperature;
+    public int Temperature {get; set;} = (int)Math.Round(temperature, MidpointRounding.AwayFromZero);
     public double ApparentTemperature { get; set;} = apparentTemperature;
     public int WeatherCode {get; set;} = weatherCode;
     public int Humidity { get; set; } = humidity;

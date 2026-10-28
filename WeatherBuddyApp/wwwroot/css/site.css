@@ -14,6 +14,10 @@ html {
   font-size: 16px;
 }
 
+.navbar-brand{
+  color: white;
+}
+
 body {
   margin-bottom: 60px;
   background: linear-gradient(180deg, #ff6000 0%, #ff8800 50%, #ffbe00 100%);
@@ -147,6 +151,7 @@ body {
 
 /* Main Weather Card */
 .weather-card {
+  justify-content: left;
   background: rgba(255, 255, 255, 0.25);
   backdrop-filter: blur(20px) saturate(160%);
   border: 1px solid rgba(255, 255, 255, 0.3);
@@ -156,13 +161,13 @@ body {
 }
 
 .city-title {
-  margin: 0 0 0.5rem 0;
+  justify-content: left;
   font-size: 2rem;
   color: white;
 }
 
 .sunrise-sunset-time{
-  margin: 0 0 0.5rem 0;
+  justify-content: left;
   font-size: 1rem;
   color: white;
 }
@@ -201,7 +206,7 @@ body {
 
 /* Forecast List */
 .forecast-section {
-  margin-top: 2rem;
+  margin-top: 1rem;
 }
 
 .forecast-title {
@@ -254,12 +259,10 @@ body {
 }
 
 .temp-max {
-  color: #fb0000;
   font-weight: 400;
 }
 
 .temp-min {
-  color: #0477f1;
   font-weight: 400;
 }
 
@@ -378,21 +381,33 @@ body {
     background-color: #f0f0f0;
 }
 
+.conditions-title{
+  font-size: 1.5rem;
+  color: white;
+  margin-bottom: 1rem;
+}
+
 .conditions-section {
-  border-radius: 6px;
-  margin-top: 20px;
-  padding: 5px;
+  margin-top: 1rem;
 }
 
 .conditions-box {
-    display: flex;
-    justify-content: center; 
-    gap: 12px;
+  margin-top: 0.5rem;
+  display: flex;
+  justify-content: left;
+  align-items: center;
 }
 
 .each-condition {
-    background-color: rgb(191, 176, 65);
-    border-radius: 12px;
-    padding: 12px 16px;
-    justify-content: center;  
+  justify-content: center;  
+  backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 32px 0px;
+  padding: 10px;
+  margin: 10px;
+  margin-left: 0px;
+  border-radius: 8px;
+  color: white;
+  font-size: 1rem;
+
 }

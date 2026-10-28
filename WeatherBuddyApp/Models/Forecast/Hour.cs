@@ -5,7 +5,7 @@ public class Hour(int time, int weatherCode, double temperature, int percipitati
 {
     public int Time {get; set;} = time;
     public int WeatherCode {get; set;} = weatherCode;
-    public double Temperature {get; set;} = temperature;
+    public double Temperature {get; set;} = (int)Math.Round(temperature, MidpointRounding.AwayFromZero);
     public int Percipitation {get; set;} = percipitation;
     public override string ToString()
     {

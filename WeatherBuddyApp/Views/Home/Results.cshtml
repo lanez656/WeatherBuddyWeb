@@ -32,27 +32,18 @@
             <span class="sunrise-sunset-time">
                     @Model.DailyForecast.DailyForecasting.First().GetSunriseAndSunset()
             </span>
-        </div>
-
-        
-        // lil map ting
-        (string Label, string Value)[]? conditions = new[]
-            {
-                (Label: "Feels like: ", Value: $"{Model.CurrentWeather.ApparentTemperature} °C"),
-                (Label: "Humidity: ", Value: $"{Model.CurrentWeather.Humidity} %"),
-                (Label: "Wind: ", Value: $"{Model.CurrentWeather.Wind.WindSpeed:0.##} m/s"), // ":0.##" means show up to two decimals
-            };
-
-        <div class="conditions-section">
-            <h3 class="conditions-title">Current Conditions</h3>    
             <div class="conditions-box">
-                @foreach (var c in conditions)
-                {
-                    <div class="each-condition">
-                        <span class="condition-label">@c.Label</span>
-                        <span class="condition-value">@c.Value</span>
-                    </div>
-                }
+                <span class="each-condition">
+                    Feels like: @Model.CurrentWeather.ApparentTemperature °C
+                </span>
+                
+                <span class="each-condition">
+                    Humidity: @Model.CurrentWeather.Humidity %
+                </span>
+                
+                <span class="each-condition">
+                    Wind: @Model.CurrentWeather.Wind.WindSpeed.ToString("0.##") m/s @Model.CurrentWeather.Wind.Direction
+                </span>
             </div>
         </div>
 

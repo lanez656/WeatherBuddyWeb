@@ -38,7 +38,7 @@
         // lil map ting
         (string Label, string Value)[]? conditions = new[]
             {
-                (Label: "Temperature: ", Value: $"{Model.CurrentWeather.Temperature} °C"),
+                (Label: "Feels like: ", Value: $"{Model.CurrentWeather.ApparentTemperature} °C"),
                 (Label: "Humidity: ", Value: $"{Model.CurrentWeather.Humidity} %"),
                 (Label: "Wind: ", Value: $"{Model.CurrentWeather.Wind.WindSpeed:0.##} m/s"), // ":0.##" means show up to two decimals
             };

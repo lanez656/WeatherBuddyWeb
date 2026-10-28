@@ -89,7 +89,7 @@ public class ControllerTests
             country: "Denmark",
             longitude: 8.45,
             latitude: 55.47,
-            currentWeather: new CurrentWeather(12, 0, 50, new Wind(10, "NW")),
+            currentWeather: new CurrentWeather(12, 14, 0, 50, new Wind(10, "NW")),
             hourlyForecast: new HourlyForecast([]),
             dailyForecast: new DailyForecast([]));
     }

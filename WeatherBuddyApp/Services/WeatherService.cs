@@ -52,8 +52,7 @@ public class WeatherService(HttpClient httpClient) : IWeatherService
         string lat = suggestion.Latitude.ToString(CultureInfo.InvariantCulture);
         string lon = suggestion.Longitude.ToString(CultureInfo.InvariantCulture);
         // TODO: maybe the url should be less hardcoded ift daily, hourly osv?
-        string url = $"https://api.open-meteo.com/v1/forecast?latitude={lat}&longitude={lon}&daily=weather_code,temperature_2m_max,temperature_2m_min,sunset,sunrise&hourly=temperature_2m,weather_code,precipitation_probability&current=temperature_2m,weather_code&timezone=auto";
-        Console.WriteLine(url);
+        string url = $"https://api.open-meteo.com/v1/forecast?latitude={lat}&longitude={lon}&daily=weather_code,temperature_2m_max,temperature_2m_min,sunset,sunrise&hourly=temperature_2m,weather_code,precipitation_probability&current=temperature_2m,apparent_temperature,relative_humidity_2m,wind_speed_10m,wind_direction_10m,weather_code&timezone=auto";
         return url;
     }
 
@@ -136,21 +135,27 @@ public class WeatherService(HttpClient httpClient) : IWeatherService
         }
 
 
-        //CurrentWeather
         CurrentWeather currentWeather;
-        try{
-        JsonElement currentElement = root.GetProperty("current");
-        var currentTemp = currentElement.GetProperty("temperature_2m").GetDouble();
-        var currentWeatherCode = currentElement.GetProperty("weather_code").GetInt32();
-        var currentTime = DateTime.ParseExact(currentElement.GetProperty("time").GetString()!,"yyyy-MM-dd'T'HH:mm",CultureInfo.InvariantCulture);
+        try
+        {
+            JsonElement currentElement = root.GetProperty("current");
+            double currentTemp = currentElement.GetProperty("temperature_2m").GetDouble();
+            double currentApparentTemperature = currentElement.GetProperty("apparent_temperature").GetDouble();
+            int currentWeatherCode = currentElement.GetProperty("weather_code").GetInt32();
+            int currentHumidity = currentElement.GetProperty("relative_humidity_2m").GetInt32();
+            double currentWindSpeed = currentElement.GetProperty("wind_speed_10m").GetDouble();
+            double currentWindDirection = currentElement.GetProperty("wind_direction_10m").GetDouble();
+            var currentTime = DateTime.ParseExact(currentElement.GetProperty("time").GetString()!,"yyyy-MM-dd'T'HH:mm",CultureInfo.InvariantCulture);
 
-        currentWeather = new CurrentWeather(
-            temperature: currentTemp,
-            weatherCode: currentWeatherCode,
-            humidity: 0,
-            wind: new(0,"S"),
-            currentTime: currentTime
-        );
+            currentWeather = new CurrentWeather(
+                temperature: currentTemp,
+                apparentTemperature: currentApparentTemperature,
+                weatherCode: currentWeatherCode,
+                humidity: currentHumidity,
+                new Wind(currentWindSpeed/3.6, ToLetter(currentWindDirection)),
+                currentTime: currentTime
+
+            );
         }
         catch
         {
@@ -175,6 +180,12 @@ public class WeatherService(HttpClient httpClient) : IWeatherService
 
         return city;
         
+    }
+
+    private static string ToLetter(double degrees)
+    {
+        string[] letter = { "N", "NE", "E", "SE", "S", "SW", "W", "NW" };
+        return letter[(int)Math.Round(degrees / 45.0) % 8];
     }
 
     public async Task<List<CitySuggestion>> GetCitySuggestionsAsync(string query)

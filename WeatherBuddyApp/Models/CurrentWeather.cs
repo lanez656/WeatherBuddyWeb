@@ -12,6 +12,6 @@ public class CurrentWeather (double temperature, double apparentTemperature, int
 
 public class Wind(double windSpeed, string direction)
 {
-    public double WindSpeed = windSpeed;
-    public string Direction= direction;
+    public int WindSpeed = (int)Math.Round(windSpeed, MidpointRounding.AwayFromZero);
+    public string Direction = direction;
 }

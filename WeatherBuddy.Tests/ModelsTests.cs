@@ -12,7 +12,7 @@ public class ModelTests
     public void Test_CurrentWeather_InstatiateCorrectly()
     {
         //Setup
-        var currentWeather = new CurrentWeather(18, 20, 1, 50, new Wind(3, "N"));
+        var currentWeather = new CurrentWeather(18, 20, 1, 50, new Wind(3, "N"), DateTime.Now);
 
         //Assert
         Assert.Equal(18, currentWeather.Temperature);

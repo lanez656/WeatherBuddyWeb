@@ -17,12 +17,12 @@ public class CurrentWeatherTests
         DateTime currentTime = new(2026, 11, 3);
 
         CurrentWeather currentWeather = new(temperature, appTemp, weatherCode, humidity, wind, currentTime);
-        Assert.Equal(currentWeather.Temperature, temperature);
-        Assert.Equal(currentWeather.ApparentTemperature, appTemp);
-        Assert.Equal(currentWeather.WeatherCode, weatherCode);
-        Assert.Equal(currentWeather.Humidity, humidity);
-        Assert.Equal(currentWeather.Wind, wind);
-        Assert.Equal(currentWeather.CurrentTime, currentTime);
+        Assert.Equal(temperature, currentWeather.Temperature);
+        Assert.Equal(appTemp, currentWeather.ApparentTemperature);
+        Assert.Equal(weatherCode, currentWeather.WeatherCode);
+        Assert.Equal(humidity, currentWeather.Humidity);
+        Assert.Same(wind, currentWeather.Wind);
+        Assert.Equal(currentTime, currentWeather.CurrentTime);
     }
 }
 
@@ -38,8 +38,8 @@ public class WindTests
     [InlineData(4.6, 5)] 
     public void ConstructorRoundingWindSpeedCorrectly(double input, int expected)
     {   
-        string windDirection = "N"; // fake wind direction here since we're only testing wind speed here
-        var wind = new Wind(input, windDirection);
-        Assert.Equal(expected, wind.WindSpeed);
+        string fakeWindDirection = "N"; // fake wind direction here since we're only testing wind speed here
+        var testWind = new Wind(input, fakeWindDirection);
+        Assert.Equal(expected, testWind.WindSpeed);
     }
 }

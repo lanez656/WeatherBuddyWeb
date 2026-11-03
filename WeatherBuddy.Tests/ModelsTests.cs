@@ -6,7 +6,7 @@ using Xunit;
 
 namespace WeatherBuddy.Tests;
 
-public class ModelTests
+public class ModelsTests
 {
     [Fact]
     public void Test_CurrentWeather_InstatiateCorrectly()

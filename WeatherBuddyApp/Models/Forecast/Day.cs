@@ -15,7 +15,7 @@ public class Day(string date, int weatherCode, double tempMax, double tempMin, D
 
     public override string ToString()
     {
-        return $"{Date} | {WeatherCodeDictionary.TranslateCode(WeatherCode)} | Maximun Temperature {TempMax} | Minimum Temperature {TempMin}";
+        return $"{Date} | {WeatherCodeDictionary.TranslateCode(WeatherCode)} | Maximum Temperature {TempMax} | Minimum Temperature {TempMin}";
     }
 
     public string GetSunriseAndSunset()

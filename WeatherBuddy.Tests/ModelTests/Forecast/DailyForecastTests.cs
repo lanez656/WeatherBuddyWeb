@@ -25,7 +25,7 @@ public class DailyForecastTests
     }
 
     [Fact]
-    public void Constructor_StoresDayList()
+    public void DailyForecast_Instantiates_Correctly()
     {
         Assert.Same(_days, _testDailyForecast.DailyForecasting);
     }

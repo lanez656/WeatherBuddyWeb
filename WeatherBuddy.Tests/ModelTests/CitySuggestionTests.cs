@@ -7,11 +7,10 @@ public class CitySuggestionTests
     [Fact]
     public void CitySuggestion_Instantiates_Correctly()
     {
-        string name = "";
+        /*string name = "";
         string country = "";
         string stateOrRegion = "";
         double latitude = 51.10;
-        double longitude = 87.93;
-
+        double longitude = 87.93;*/
     }
 }

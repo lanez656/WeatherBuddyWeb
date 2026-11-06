@@ -219,13 +219,11 @@ public class WeatherService(HttpClient httpClient) : IWeatherService
         return city;   
     }
 
-    /// <summary>little helper method to convert the degrees of which way the wind is blowing, to the direction</summary>
+    /// <summary>little helper method to convert the degrees (out to 360) of which way the wind is blowing, to the direction</summary>
     private static string ToWord(double degrees)
     {
         string[] direction = ["North", "Northeast", "East", "Southeast", "South", "Southwest", "West", "Northwest"];
         return direction[(int)Math.Round(degrees / 45.0) % 8];
     }
-
-    
 }
 
